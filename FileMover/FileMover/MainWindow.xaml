@@ -1,17 +1,19 @@
 ﻿<Window x:Class="FileMover.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="FileMover" Height="230" Width="571">
+        Title="FileMover" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="230" Width="571">
     <Grid>
-        <Button Content="Move Files" Height="23" HorizontalAlignment="Left" Margin="438,135,0,0" Name="MoveButton" VerticalAlignment="Top" Width="75" Click="MoveButton_Click" />
+        <Button Content="Move Files" Height="23" HorizontalAlignment="Left" Margin="438,152,0,0" Name="MoveButton" VerticalAlignment="Top" Width="75" Click="MoveButton_Click" />
         <Label Content="Source Directory:" Height="28" HorizontalAlignment="Left" Margin="56,26,0,0" Name="SourceDirLabel" VerticalAlignment="Top" />
-        <Label Content="Destination Directory:" Height="28" HorizontalAlignment="Left" Margin="32,85,0,0" Name="DestinationDirLabel" VerticalAlignment="Top" />
-        <ComboBox Height="23" HorizontalAlignment="Left" Margin="181,130,0,0" Name="FileTypeComboBox" VerticalAlignment="Top" Width="120" SelectionChanged="FileTypeComboBox_SelectionChanged" />
-        <Label Content="FileType:" Height="28" HorizontalAlignment="Left" Margin="100,130,0,0" Name="FileTypeLabel" VerticalAlignment="Top" />
+        <Label Content="Destination Directory:" Height="28" HorizontalAlignment="Left" Margin="32,102,0,0" Name="DestinationDirLabel" VerticalAlignment="Top" />
+        <ComboBox Height="23" HorizontalAlignment="Left" Margin="181,147,0,0" Name="FileTypeComboBox" VerticalAlignment="Top" Width="120" SelectionChanged="FileTypeComboBox_SelectionChanged" />
+        <Label Content="FileType:" Height="28" HorizontalAlignment="Left" Margin="100,147,0,0" Name="FileTypeLabel" VerticalAlignment="Top" />
         <TextBox Height="23" HorizontalAlignment="Left" Margin="181,31,0,0" Name="srcDirTxtbx" VerticalAlignment="Top" Width="252"/>
-        <TextBox Height="23" HorizontalAlignment="Left" Margin="181,85,0,0" Name="destDirTxtbx" VerticalAlignment="Top" Width="252" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="181,102,0,0" Name="destDirTxtbx" VerticalAlignment="Top" Width="252" />
         <Button Content="Browse" Height="23" HorizontalAlignment="Left" Margin="438,31,0,0" Name="SourceBrowseButton" VerticalAlignment="Top" Width="75" Click="SourceBrowseButton_Click" />
-        <Button Content="Browse" Height="23" HorizontalAlignment="Left" Margin="438,84,0,0" Name="DestinationBrowseButton" VerticalAlignment="Top" Width="75" Click="DestinationBrowseButton_Click" />
-        <CheckBox Content="Search Recursively" Height="16" HorizontalAlignment="Left" Margin="181,60,0,0" Name="SearchRecursiveCheckBox" VerticalAlignment="Top" DataContext="{Binding}" Click="SearchRecursiveCheckBox_Checked" />
+        <Button Content="Browse" Height="23" HorizontalAlignment="Left" Margin="438,101,0,0" Name="DestinationBrowseButton" VerticalAlignment="Top" Width="75" Click="DestinationBrowseButton_Click" />
+        <CheckBox Content="Search Recursively" Height="16" HorizontalAlignment="Right" Margin="0,68,36,0" Name="SearchRecursiveCheckBox" VerticalAlignment="Top" DataContext="{Binding}" Click="SearchRecursiveCheckBox_Checked" />
+        <TextBox Height="23" HorizontalAlignment="Left" Margin="181,68,0,0" Name="FilterTextBox" VerticalAlignment="Top" Width="189" KeyUp="FilterTextBox_KeyUp" />
+        <Label Content="Files containing:" Height="28" HorizontalAlignment="Left" Margin="61,68,0,0" Name="label1" VerticalAlignment="Top" />
     </Grid>
 </Window>

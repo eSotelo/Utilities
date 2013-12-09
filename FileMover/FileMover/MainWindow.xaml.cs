@@ -20,17 +20,26 @@ namespace FileMover
         /// <summary>
         /// The _source folder
         /// </summary>
-        private string _sourceFolder = string.Empty;
+        /// <value>
+        /// The _source folder.
+        /// </value>
+        private string SourceFolder { get; set; }
 
         /// <summary>
         /// The _destination folder
         /// </summary>
-        private string _destinationFolder = string.Empty;
+        /// <value>
+        /// The _destination folder.
+        /// </value>
+        private string DestinationFolder { get; set; }
 
         /// <summary>
         /// The _file extention to move
         /// </summary>
-        private string _fileExtentionToMove = string.Empty;
+        /// <value>
+        /// The _file extention to move.
+        /// </value>
+        private string FileExtentionToMove { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether [search recursive].
@@ -39,6 +48,14 @@ namespace FileMover
         ///   <c>true</c> if [search recursive]; otherwise, <c>false</c>.
         /// </value>
         private Boolean SearchRecursive { get; set; }
+
+        /// <summary>
+        /// Gets or sets the file name filter.
+        /// </summary>
+        /// <value>
+        /// The file name filter.
+        /// </value>
+        private string FileNameFilter { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MainWindow"/> class.
@@ -50,8 +67,8 @@ namespace FileMover
             _datasrc.Add(".mp4");
             _datasrc.Add(".m4a");
             FileTypeComboBox.ItemsSource = _datasrc;
-            srcDirTxtbx.Text = _sourceFolder;
-            destDirTxtbx.Text = _destinationFolder;
+            srcDirTxtbx.Text = SourceFolder;
+            destDirTxtbx.Text = DestinationFolder;
         }
 
         /// <summary>
@@ -61,18 +78,17 @@ namespace FileMover
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void MoveButton_Click(object sender, RoutedEventArgs e)
         {
-            var consolidatedFileLocation = new DirectoryInfo(_destinationFolder);
+            var consolidatedFileLocation = new DirectoryInfo(DestinationFolder);
             if (!consolidatedFileLocation.Exists)
-                Directory.CreateDirectory(_destinationFolder);
+                Directory.CreateDirectory(DestinationFolder);
 
-            List<String> filesToMove = Directory.GetFiles(_sourceFolder, "*" + _fileExtentionToMove, SearchRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
-            foreach (string file in filesToMove)
+            var filesToMove = Directory.GetFiles(SourceFolder, (!string.IsNullOrWhiteSpace(FileNameFilter) ? "*" + FileNameFilter + "*" : "*") + FileExtentionToMove, SearchRecursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).ToList();
+            foreach (var file in filesToMove)
             {
                 var mFile = new FileInfo(file);
                 if (!(new FileInfo(consolidatedFileLocation + "\\" + mFile.Name).Exists))
                     mFile.MoveTo(consolidatedFileLocation + "\\" + mFile.Name);
             }
-
         }
 
         /// <summary>
@@ -82,7 +98,7 @@ namespace FileMover
         /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
         private void FileTypeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _fileExtentionToMove = FileTypeComboBox.SelectedValue.ToString();
+            FileExtentionToMove = FileTypeComboBox.SelectedValue.ToString();
         }
 
         /// <summary>
@@ -92,33 +108,7 @@ namespace FileMover
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void SourceBrowseButton_Click(object sender, RoutedEventArgs e)
         {
-            _sourceFolder = (Directory.Exists(_sourceFolder)) ? _sourceFolder : "";
-            var dlg1 = new Ionic.Utils.FolderBrowserDialogEx
-            {
-                Description = "Select a folder for the extracted files:",
-                ShowNewFolderButton = true,
-                ShowEditBox = true,
-                ShowFullPathInEditBox = false,
-                RootFolder = Environment.SpecialFolder.MyComputer,
-            };
-
-            var result = dlg1.ShowDialog();
-
-            if (result == System.Windows.Forms.DialogResult.OK)
-            {
-                _sourceFolder = dlg1.SelectedPath;
-                srcDirTxtbx.Text = _sourceFolder;
-            }
-        }
-
-        /// <summary>
-        /// Handles the Click event of the DestinationBrowseButton control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void DestinationBrowseButton_Click(object sender, RoutedEventArgs e)
-        {
-            _destinationFolder = (Directory.Exists(_destinationFolder)) ? _destinationFolder : "";
+            SourceFolder = (Directory.Exists(SourceFolder)) ? SourceFolder : "";
             var dlg1 = new Ionic.Utils.FolderBrowserDialogEx
             {
                 Description = "Select a folder for the extracted files:",
@@ -131,8 +121,32 @@ namespace FileMover
             var result = dlg1.ShowDialog();
 
             if (result != System.Windows.Forms.DialogResult.OK) return;
-            _destinationFolder = dlg1.SelectedPath;
-            destDirTxtbx.Text = _destinationFolder;
+            SourceFolder = dlg1.SelectedPath;
+            srcDirTxtbx.Text = SourceFolder;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the DestinationBrowseButton control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void DestinationBrowseButton_Click(object sender, RoutedEventArgs e)
+        {
+            DestinationFolder = (Directory.Exists(DestinationFolder)) ? DestinationFolder : "";
+            var dlg1 = new Ionic.Utils.FolderBrowserDialogEx
+            {
+                Description = "Select a folder for the extracted files:",
+                ShowNewFolderButton = true,
+                ShowEditBox = true,
+                ShowFullPathInEditBox = false,
+                RootFolder = Environment.SpecialFolder.MyComputer,
+            };
+
+            var result = dlg1.ShowDialog();
+
+            if (result != System.Windows.Forms.DialogResult.OK) return;
+            DestinationFolder = dlg1.SelectedPath;
+            destDirTxtbx.Text = DestinationFolder;
         }
 
         /// <summary>
@@ -143,6 +157,16 @@ namespace FileMover
         private void SearchRecursiveCheckBox_Checked(object sender, RoutedEventArgs e)
         {
             SearchRecursive = SearchRecursiveCheckBox.IsChecked ?? true;
+        }
+
+        /// <summary>
+        /// Handles the KeyUp event of the FilterTextBox control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Input.KeyEventArgs"/> instance containing the event data.</param>
+        private void FilterTextBox_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            FileNameFilter = FilterTextBox.Text;
         }
 
     }
