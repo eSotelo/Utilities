@@ -1,0 +1,8 @@
+﻿<Window x:Class="FileRenamer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="227" Width="448">
+    <Grid Height="193" Width="426">
+        <Button Content="Button" Height="23" HorizontalAlignment="Left" Margin="321,142,0,0" Name="button1" VerticalAlignment="Top" Width="75" />
+    </Grid>
+</Window>
